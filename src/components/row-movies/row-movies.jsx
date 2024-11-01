@@ -7,22 +7,21 @@ import RowMoviesItem from '../row-movies-item/row-movies-item';
 import './row-movies.scss';
 
 class RowMovies extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			open: false,
-			movies: [],
-		};
-		this.movieService = new MovieService();
-	}
+	state = {
+		open: false,
+		movies: [],
+		movieId: null,
+	};
+
+	movieService = new MovieService();
 
 	componentDidMount() {
 		this.getTrendingMovies();
 	}
 
-	onToggleOpen = () => {
-		this.setState(({ open }) => ({ open: !open }));
-	};
+	onClose = () => this.setState({ open: false });
+
+	onOpen = id => this.setState({ open: true, movieId: id });
 
 	getTrendingMovies = () => {
 		this.movieService
@@ -31,7 +30,7 @@ class RowMovies extends React.Component {
 	};
 
 	render() {
-		const { open, movies } = this.state;
+		const { open, movies, movieId } = this.state;
 
 		return (
 			<div className='rowmovies'>
@@ -45,16 +44,12 @@ class RowMovies extends React.Component {
 				</div>
 				<div className='rowmovies__lists'>
 					{movies.map(movie => (
-						<RowMoviesItem
-							key={movie.id}
-							movie={movie}
-							onToggleOpen={this.onToggleOpen}
-						/>
+						<RowMoviesItem key={movie.id} movie={movie} onOpen={this.onOpen} />
 					))}
 				</div>
 
-				<Modal open={open} onClose={this.onToggleOpen}>
-					<MovieInfo />
+				<Modal open={open} onClose={this.onClose}>
+					<MovieInfo movieId={movieId} />
 				</Modal>
 			</div>
 		);

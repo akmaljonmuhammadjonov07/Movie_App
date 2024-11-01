@@ -25,14 +25,14 @@ class MovieService {
 			`${this._apiBase}/movie/top_rated?${this._apiLng}&${this._apiKey}`
 		);
 		const movies = response.results;
-		console.log(movies);
 		return movies && movies.map(movie => this._transformMovie(movie));
 	};
 
 	getDetailedMovie = async id => {
-		return this.getResource(
+		const movie = await this.getResource(
 			`${this._apiBase}/movie/${id}?${this._apiLng}&${this._apiKey}`
 		);
+		return this._transformMovie(movie);
 	};
 
 	getRandomMovie = async () => {

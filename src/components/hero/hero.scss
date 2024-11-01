@@ -39,6 +39,10 @@
 		button {
 			width: fit-content;
 		}
+		div {
+			display: flex;
+			gap: 10px;
+		}
 	}
 
 	&__movie {
@@ -65,12 +69,6 @@
 
 			p {
 				opacity: .7;
-			}
-
-			div {
-				display: grid;
-				grid-template-columns: 1fr 1fr;
-				gap: 10px;
 			}
 		}
 	}
