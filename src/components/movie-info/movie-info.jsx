@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import MovieService from '../../services/movie-service';
 import Error from '../error/error';
@@ -58,7 +59,9 @@ class MovieInfo extends React.Component {
 		);
 	}
 }
-
+MovieInfo.PropTypes = {
+	movieId: PropTypes.number,
+};
 export default MovieInfo;
 
 const Content = ({ movie }) => {
@@ -72,4 +75,7 @@ const Content = ({ movie }) => {
 			</div>
 		</>
 	);
+};
+Content.PropTypes = {
+	movie: PropTypes.object,
 };

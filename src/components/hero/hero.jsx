@@ -1,7 +1,9 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import MovieService from '../../services/movie-service';
 import Error from '../error/error';
 import Spinner from '../spinner/spinner';
+
 import './hero.scss';
 
 class Hero extends React.Component {
@@ -82,4 +84,12 @@ const Content = ({ movie }) => {
 			</div>
 		</>
 	);
+};
+Content.PropTypes = {
+	movie: {
+		backdrop_path: PropTypes.string,
+		name: PropTypes.string,
+		description: PropTypes.string,
+		id: PropTypes.number,
+	},
 };

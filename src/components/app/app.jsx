@@ -1,13 +1,21 @@
-import Hero from '../hero/hero'
-import Navbar from '../navbar/navbar'
-import RowMovies from '../row-movies/row-movies'
+import ErrorBoundary from '../error-boundary/error-boundary';
+import Hero from '../hero/hero';
+import Navbar from '../navbar/navbar';
+import RowMovies from '../row-movies/row-movies';
 
 const App = () => {
-	return <div className='app'>
-		<Navbar />
-		<Hero />
-		<RowMovies />
-	</div>
-}
+	return (
+		<div className='app'>
+			<Navbar />
+			<ErrorBoundary>
+				<Hero />
+			</ErrorBoundary>
 
-export default App
+			<ErrorBoundary>
+				<RowMovies />
+			</ErrorBoundary>
+		</div>
+	);
+};
+
+export default App;
