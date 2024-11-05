@@ -1,14 +1,15 @@
 import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
-import { useNavigate } from "react-router-dom"
+import { useParams } from 'react-router-dom'
 import useMovieService from '../../services/movie-service'
 import Error from '../error/error'
 import Spinner from '../spinner/spinner'
-import "./movie-info.scss"
+import "./detailed-movie.scss"
 
-const MovieInfo = ({movieId}) => {
+const DetailedMovie = () => {
 	const [movie, setMovie] = useState(null)
 
+	const {movieId} = useParams()
 	const {getDetailedMovie, loading, error} =  useMovieService()
 
 	useEffect(() => {
@@ -29,37 +30,37 @@ const MovieInfo = ({movieId}) => {
 	const content = !(error || loading || !movie) ? <Content movie={movie} /> : null
 
 	return (
-		<div className='movieinfo'>
+		<>
 			{initialContent}
 			{errorContent}
 			{loadingContent}
 			{content}
-		</div>
+		</>
 	)
 }
-MovieInfo.propTypes = {
-	movieId: PropTypes.number
-}
-export default MovieInfo
+export default DetailedMovie
 
 const Content = ({movie}) => {
-	const navigate = useNavigate()
-
 	return (
-		<>
-			<img src={movie.backdrop_path} alt='img' />
-	
-			<div className='hero__movie-descr'>
-				<h2>{movie.name}</h2>	
-				<p>{movie.description}</p>
-				<button 
-					className='btn btn-light'
-					onClick={() => navigate(`/movie/${movie.id}`)}
-				>
-					Details
-				</button>
+		<div className='detailedmovie'>
+			<div className='detailedmovie__image'>
+				<img 
+					src={movie.poster_path}
+					alt={movie.name}
+				/>
 			</div>
-		</>
+			<div className='detailedmovie__descr'>
+				<h1>{movie.name}</h1>
+				<p>{movie.description}</p>
+				<div className='detailedmovie__descr-info'>
+					<img src="/date.svg" alt="" />
+					<p>{movie.release_date}</p>
+					<div className='dot' />
+					<p>{movie.vote_average.toFixed(1)}</p>
+					<img src="/star.svg" alt="" />
+				</div>
+			</div>
+		</div>
 	)
 }
 Content.propTypes = {
