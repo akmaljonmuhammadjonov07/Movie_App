@@ -1,24 +1,25 @@
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import Error from '../error/error';
+import PropTypes from 'prop-types'
+import React from 'react'
+import Error from '../error/error'
 
-class ErrorBoundary extends Component {
+class ErrorBoundary extends React.Component {
 	state = {
-		error: false,
-	};
+		error: false
+	}
 
 	componentDidCatch() {
-		this.setState({ error: true });
+		this.setState({error: true})
 	}
 
 	render() {
-		if (this.state.error) {
-			return <Error />;
+		if(this.state.error) {
+			return <Error />
 		}
-		return this.props.children;
+
+		return this.props.children
 	}
 }
-ErrorBoundary.PropTypes = {
-	children: PropTypes.element,
-};
-export default ErrorBoundary;
+ErrorBoundary.propTypes = {
+	children: PropTypes.element
+}
+export default ErrorBoundary

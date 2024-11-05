@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Modal } from 'react-responsive-modal';
 import 'react-responsive-modal/styles.css';
-import MovieService from '../../services/movie-service';
+import useMovieService from '../../services/movie-service';
 import Error from '../error/error';
 import MovieInfo from '../movie-info/movie-info';
 import RowMoviesItem from '../row-movies-item/row-movies-item';
@@ -10,19 +10,16 @@ import Spinner from '../spinner/spinner';
 import './row-movies.scss';
 
 const RowMovies = () => {
-	const [loading, setLoading] = useState(false);
-	const [error, setError] = useState(false);
 	const [open, setOpen] = useState(false);
 	const [movies, setMovies] = useState([]);
 	const [movieId, setMovieId] = useState(null);
-	const [newMovies, setNewMovies] = useState([]);
 	const [page, setPage] = useState(2);
 	const [newItemLoading, setNewItemLoading] = useState(false);
 
-	const movieService = new MovieService();
+	const { getTrandingMovies, loading, error } = useMovieService();
 
 	useEffect(() => {
-		getTrendingMovies();
+		getMovies();
 	}, []);
 
 	const onClose = () => setOpen(false);
@@ -32,30 +29,21 @@ const RowMovies = () => {
 		setOpen(true);
 	};
 
-	const getTrendingMovies = () => {
-		movieService
-			.getTrandingMovies()
+	const getMovies = page => {
+		getTrandingMovies(page)
 			.then(res => setMovies(movies => [...movies, ...res]))
-			.catch(() => {
-				setError(true);
-			})
-			.finally(() => {
-				setLoading(false);
-				setNewItemLoading(false);
-			});
+			.finally(() => setNewItemLoading(false));
 	};
+
 	const getMoreMovies = () => {
 		setNewItemLoading(true);
 		setPage(page => page + 1);
-
-		getTrendingMovies(page);
+		getMovies(page);
 	};
 
 	const errorContent = error ? <Error /> : null;
 	const loadingContent = loading ? <Spinner /> : null;
-	const content = !(error || loading) ? (
-		<Content movies={movies} onOpen={onOpen} />
-	) : null;
+
 	return (
 		<div className='rowmovies'>
 			<div className='rowmovies__top'>
@@ -66,23 +54,20 @@ const RowMovies = () => {
 				<div className='hr' />
 				<a href='#'>See more</a>
 			</div>
-			<div className='rowmovies__lists'>
-				{movies.map(movie => (
-					<RowMoviesItem key={movie.id} movie={movie} onOpen={onOpen} />
-				))}
-			</div>
 			{errorContent}
 			{loadingContent}
-			{content}
+			<Content movies={movies} onOpen={onOpen} />
+
 			<div className='rowmovies__loadmore'>
 				<button
 					className='btn btn-secondary'
 					onClick={getMoreMovies}
-					disabled={!newItemLoading}
+					disabled={newItemLoading}
 				>
 					Load More
 				</button>
 			</div>
+
 			<Modal open={open} onClose={onClose}>
 				<MovieInfo movieId={movieId} />
 			</Modal>
@@ -95,9 +80,9 @@ export default RowMovies;
 const Content = ({ movies, onOpen }) => {
 	return (
 		<div className='rowmovies__lists'>
-			{movies.map(movie => {
-				<RowMoviesItem key={movie.id} movie={movie} onOpen={onOpen} />;
-			})}
+			{movies.map(movie => (
+				<RowMoviesItem key={movie.id} movie={movie} onOpen={onOpen} />
+			))}
 		</div>
 	);
 };
