@@ -1,10 +1,5 @@
 import { lazy, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
-// import DetailedPage from '../../pages/detailed-page';
-// import HomePage from '../../pages/home-page';
-// import NotFoundPage from '../../pages/not-found-page';
-// import PopularPage from '../../pages/popular-page';
-// import TrandingPage from '../../pages/tranding-page';
 import Navbar from '../navbar/navbar';
 import Spinner from '../spinner/spinner';
 
